@@ -1,0 +1,247 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Ecoscope
+{% endblock %}
+
+{% block main %}
+<div class="page-title dark-background"></div>
+
+<!--Analysis form-->
+<section id="analysis" class="scenario section" style="padding:0px;">
+    <div class="container">
+      <div class="formbold-main-wrapper">
+          <div id="form-container" class="formbold-form-wrapper" style="max-width: 1150px;">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <h4><i class="bi bi-radar"></i> <b>{{ company }} - AI-Driven ESG Insights</b></h4>
+                    <p class="text-muted"><i>Decode, Analyse, Sustain</i></p><br>
+                </div>
+                <div>
+                    <a href="{{ url_for('profile', ticker=ticker) }}" class="text-decoration-none fw-bold" style="color: #1e4356;">
+                      <i class="bi bi-arrow-left"></i> Back to Dashboard
+                    </a>
+                </div>
+              </div>
+            <form action="{{url_for('analysis', ticker=ticker)}}" method="POST">
+                <div class="formbold-steps">
+                    <ul>
+                        <li class="formbold-step-menu1 active">
+                            <span>1</span>
+                            Investor Profile 
+                        </li>
+                        <li class="formbold-step-menu2">
+                            <span>2</span>
+                            Assign Weightage
+                        </li>
+                        <li class="formbold-step-menu3">
+                            <span>3</span>
+                            ESG Parameters
+                        </li>
+                        <li class="formbold-step-menu4">
+                            <span>4</span>
+                            Risk Assessment
+                        </li>
+                        <li class="formbold-step-menu5">
+                          <span>5</span>
+                          Review & Submit
+                      </li>
+                    </ul>
+                </div>
+        
+                <div class="formbold-form-step-1 active">
+                  <div class="formbold-input-flex">
+                    <div>
+                        <label for="sector" class="formbold-form-label">
+                        Sector
+                        </label>
+                        <h5 class="formbold-form-value">{{ sector }}</h5> 
+                        <input type="hidden" id="sector" name="sector" value="{{ sector }}">
+                    </div>
+                    <div>
+                        <label for="company" class="formbold-form-label">Company Name</label>
+                        <h5 class="formbold-form-value">{{ company }}</h5>
+                        <input type="hidden" id="company" name="company" value="{{ company }}">
+                    </div>
+                  </div>
+                  <div class="formbold-input-flex">
+                    <div>
+                        <label for="inv-type" class="formbold-form-label">
+                          Investment Type
+                        </label>
+                        <select name="inv-type" id="investment-type" class="formbold-form-input" >
+                            <option value="Institutional">Institutional</option>
+                            <option value="Retail">Retail</option>
+                            <option value="Impact Investment">Impact Investment</option>
+                            <option value="Hedge Fund">Hedge Fund</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="inv-horizon" class="formbold-form-label">
+                          Investment Horizon
+                        </label>
+                        <select name="inv-horizon" id="investment-horizon" class="formbold-form-input" >
+                            <option value="Short Term">Short Term</option>
+                            <option value="Medium Term">Medium Term</option>
+                            <option value="Long Term">Long Term</option>
+                        </select>
+                    </div>
+                  </div>    
+                  
+                </div>
+                
+                <div class="formbold-form-step-2">
+                  <label for="risk-tolerance" class="formbold-form-label">Risk Tolerance</label>
+                  
+                  <div class="form-check" style="display: flex; flex-direction: column; gap: 10px;">
+                    <div style="display: flex; align-items: center;">
+                        <input class="form-check-input" type="radio" name="riskLevel" id="Low" value="Low" checked>
+                        <label class="form-check-label" for="Low" style="margin-left: 8px;">  
+                            Low
+                        </label>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center;">
+                        <input class="form-check-input" type="radio" name="riskLevel" id="Medium" value="Medium">
+                        <label class="form-check-label" for="Medium" style="margin-left: 8px;">  
+                            Medium 
+                        </label>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center;">
+                        <input class="form-check-input" type="radio" name="riskLevel" id="High" value="High">
+                        <label class="form-check-label" for="High" style="margin-left: 8px;">  
+                            High 
+                        </label>
+                    </div>
+                  </div>
+
+                  <div style="padding-top:10px">
+                    <label for="esg" class="formbold-form-label">ESG Weightage</label>
+                  </div>
+                  <div class="formbold-input-flex">
+                    <label for="environmental-w"><b>Environmental:</b></label>
+                    <input type="number" id="environmental-weightage" name="env-w" value="40" min="0" max="100" oninput="validateInputs()">%
+                    
+                    <label for="social-w"><b>Social:</b></label>
+                    <input type="number" id="social-weightage" name="soc-w" value="30" min="0" max="100" oninput="validateInputs()">%
+                    
+                    <label for="governance-w"><b>Governance:</b></label>
+                    <input type="number" id="governance-weightage" name="gov-w" value="30" min="0" max="100" oninput="validateInputs()">%
+                  </div>
+                  <p class="error" id="error-message" style="color:red;"></p>
+                </div>
+
+                <div class="formbold-form-step-3">
+                    <label for="environment" class="formbold-form-label">Environmental Factors (E)</label>
+                    <select id="environment" name="environment" data-placeholder="Select Environmental Factors" multiple data-multi-select>
+                        <option value="Carbon Emissions (Scope 1, 2, 3)">Carbon Emissions (Scope 1, 2, 3)</option>
+                        <option value="Climate Change Vulnerability & Transition Risks">Climate Change Vulnerability & Transition Risks</option>
+                        <option value="Product Carbon Footprint">Product Carbon Footprint</option>
+                        <option value="Water Stress & Management">Water Stress & Management</option>
+                        <option value="Biodiversity & Land Use Impact">Biodiversity & Land Use Impact</option>
+                        <option value="Raw Material Sourcing & Circular Economy">Raw Material Sourcing & Circular Economy</option>
+                        <option value="Electronic & Industrial Waste Management">Electronic & Industrial Waste Management</option>
+                        <option value="Toxic Emissions & Chemical Pollution">Toxic Emissions & Chemical Pollution</option>
+                        <option value="Plastic & Packaging Waste">Plastic & Packaging Waste</option>
+                        <option value="Investment in Clean Technologies">Investment in Clean Technologies</option>
+                        <option value="Renewable Energy Transition">Renewable Energy Transition</option>
+                        <option value="Green Infrastructure & Sustainable Buildings">Green Infrastructure & Sustainable Buildings</option>
+                    </select>
+                    
+                    <label for="social" class="formbold-form-label">Social Factors (S)</label>
+                    <select name="social" id="social" data-placeholder="Select Social Factors" multiple data-multi-select>
+                        <option value="Health, Safety & Well-being">Health, Safety & Well-being</option>
+                        <option value="Human Capital Development & Employee Retention">Human Capital Development & Employee Retention</option>
+                        <option value="Fair Wages & Labor Standards (Supply Chain & Operations)">Fair Wages & Labor Standards (Supply Chain & Operations)</option>
+                        <option value="Product Safety & Quality">Product Safety & Quality</option>
+                        <option value="Privacy, Data Security & Cybersecurity Risks">Privacy, Data Security & Cybersecurity Risks</option>
+                        <option value="Chemical & Hazardous Product Safety">Chemical & Hazardous Product Safety</option>
+                        <option value="Community Engagement & Social License to Operate">Community Engagement & Social License to Operate</option>
+                        <option value="Controversial & Conflict Sourcing (e.g., minerals, deforestation)">Controversial & Conflict Sourcing (e.g., minerals, deforestation)</option>
+                        <option value="Access to Health Care & Medicines">Access to Health Care & Medicines</option>
+                        <option value="Financial Inclusion & Access to Banking">Financial Inclusion & Access to Banking</option>
+                        <option value="Opportunities in Nutrition & Public Health">Opportunities in Nutrition & Public Health</option>
+                    </select>
+                    
+                    <label for="governance" class="formbold-form-label">Governance Factors (G)</label>
+                    <select name="governance" id="governance" data-placeholder="Select Governance Factors" multiple data-multi-select>
+                        <option value="Board Independence & Diversity">Board Independence & Diversity</option>
+                        <option value="Executive Pay & Performance Alignment">Executive Pay & Performance Alignment</option>
+                        <option value="Ownership Structure & Shareholder Rights">Ownership Structure & Shareholder Rights</option>
+                        <option value="Anti-corruption & Anti-bribery Policies">Anti-corruption & Anti-bribery Policies</option>
+                        <option value="Tax Transparency & Fair Tax Practices">Tax Transparency & Fair Tax Practices</option>
+                        <option value="Political Contributions & Lobbying Transparency">Political Contributions & Lobbying Transparency</option>
+                        <option value="Financial Accounting & Reporting Integrity">Financial Accounting & Reporting Integrity</option>
+                        <option value="Regulatory Compliance with ESG Laws (e.g., SEC, CSRD, SFDR)">Regulatory Compliance with ESG Laws (e.g., SEC, CSRD, SFDR)</option>
+                    </select>
+                    
+                </div>
+  
+                <div class="formbold-form-step-4">
+                    <div>
+                        <label for="risk-appetite" class="formbold-form-label">
+                          Risk Appetite
+                        </label>
+                        <select name="risk-appetite" id="risk-appetite" class="formbold-form-input" >
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label for="rep" class="formbold-form-label">
+                          Regulatory Exposure Preference
+                        </label>
+                        <select name="rep" id="rep" class="formbold-form-input" >
+                            <option value="Flexible">Flexible Compliance</option>
+                            <option value="Moderate">Moderate Compliance</option>
+                            <option value="Strict">Strict Compliance</option>
+                        </select>
+                      </div>
+                      <div class="formbold-input-flex">
+                        <div>
+                            <label for="sbc" class="formbold-form-label">
+                              Sector Benchmark Comparison
+                            </label>
+                            <input type="radio" id="yes" name="Sbc" value="Yes" checked>
+                            <label for="yes">Yes</label><br>
+                            <input type="radio" id="no" name="Sbc" value="No">
+                            <label for="no">No</label><br>
+                          </div>
+                      </div>
+                </div>
+        
+                <div class="formbold-form-step-5">
+                  <ul id="review-list"></ul>
+                </div>
+        
+                <div class="formbold-form-btn-wrapper">
+                  <button class="formbold-back-btn">
+                    Back
+                  </button>
+        
+                  <button class="formbold-btn">
+                      Next Step
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <g clip-path="url(#clip0_1675_1807)">
+                      <path d="M10.7814 7.33312L7.20541 3.75712L8.14808 2.81445L13.3334 7.99979L8.14808 13.1851L7.20541 12.2425L10.7814 8.66645H2.66675V7.33312H10.7814Z" fill="white"/>
+                      </g>
+                      <defs>
+                      <clipPath id="clip0_1675_1807">
+                      <rect width="16" height="16" fill="white"/>
+                      </clipPath>
+                      </defs>
+                      </svg>
+                  </button>
+                </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<script src="{{ url_for('static', filename='js/analysis-form.js') }}"></script>
+<script src="{{ url_for('static', filename='js/multiselect.js') }}"></script> 
+{% endblock %}

@@ -1,0 +1,111 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block main %}
+<div class="page-title dark-background"></div>
+
+<form action="" method="post">
+    <div class="container box">
+      <h1>Login</h1>
+      {{ form.hidden_tag() }}<br>
+      <h5 for="name"><b>Username</b></h5>
+      {{ form.username (id="Username") }}<br><br>
+      <h5 for="psw"><b>Password</b></h5>
+      {{ form.password (id="psw") }}<br><br>
+      <div class="center" >
+        {{ form.submit(class="btn btn-success button",value="Login") }}
+      </div>
+      <br>
+      <h6 style="color:red">{{error}} </h6>
+      <div class="signin">
+      <p>Didn't have an account? <a href="{{url_for('register')}}">Register</a></p>
+    </div><br>
+    </div>
+    <br>
+  </form>
+<style>
+.container.box {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    background: #ffffff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 26px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+h5 {
+    text-align: left;
+    font-size: 14px;
+    color: #444;
+    margin-bottom: 5px;
+}
+
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 15px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+input[type="text"]:focus, input[type="password"]:focus {
+    border-color: #1e4356;
+    outline: none;
+    box-shadow: 0px 0px 5px rgba(40, 112, 167, 0.5);
+}
+
+.center {
+    text-align: center;
+}
+
+.button {
+    width: 100%;
+    padding: 10px;
+    background: #1e4356;
+    border: none;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+}
+
+.button:hover {
+    background: #357696;
+}
+
+h6 {
+    font-size: 14px;
+    text-align: center;
+}
+
+.signin {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.signin a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.signin a:hover {
+    text-decoration: underline;
+}
+
+</style>
+{% endblock %}

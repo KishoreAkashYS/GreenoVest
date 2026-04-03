@@ -1,0 +1,218 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block main %}
+    <!-- Hero Section -->
+    <section id="hero" class="hero section dark-background">
+
+      <!-- <img src="static/img/hero-bg.jpg" alt="" data-aos="fade-in"> -->
+
+      <div id="hero-carousel" class="carousel carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+
+        <div class="container position-relative">
+
+          <div class="carousel-item active">
+            <div class="carousel-container">
+              
+              {% if not current_user.is_authenticated %}
+                  <h2>Greenovest - Evolve Smarter</h2>
+                  <p>Greenovest is an advanced ESG analysis and scenario forecasting platform designed for investors. It provides real-time ESG insights, regulatory compliance analysis, and predictive scenario modeling. By leveraging AI-driven analytics, Greenovest empowers users to assess sustainability risks, optimize investment decisions, and navigate evolving ESG landscapes with confidence.</p>
+                  <a href="{{url_for('login')}}" class="btn-get-started">Explore Now</a>
+              {% else %}
+                  <div class="container mt-4" style="margin-bottom: 60px;">
+                      <div class="row justify-content-center">
+                        <form class="col-md-6" method="POST" action="">
+                            <h2>GenAI-Powered ESG Platform</h2>
+                            <div class="input-group mb-2" style="width: 100%; max-width: 600px; position: relative;">
+                              <!-- Dropdown -->
+                                <select class="form-select"
+                                style="box-shadow: none; background: white; border-radius: 25px 0px 0px 25px;
+                                      border-color: white; height: 42px; line-height: 2; border-left: none;
+                                      overflow-y: auto; "
+                                      onfocus="this.style.boxShadow='none'; this.style.outline='0'; this.style.borderColor='white';"
+                                      name="ticker">
+                                  <option value="" disabled selected>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Select a Company....</option>
+                                  {% for company in companies %}
+                                    <option value="{{ company[2] }}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ company[1] }}</option>
+                                  {% endfor %}
+                              </select>
+                              
+
+                              <!-- Submit Button -->
+                              <button type="submit" class="btn btn-primary"
+                                      style="border-radius: 0 25px 25px 0; height: 42px; width: 60px; background-color: #68a4c4; border-color: #ffffff;">
+                                <i class="bi bi-search" style="font-size: 1.2rem;"></i>
+                              </button>
+                            </div>
+                        </form>
+
+                        <div class="container text-center mt-4">
+                          <div class="d-flex justify-content-center align-items-center gap-3">
+                            <span style="font-weight: 500;">Choose:</span>
+
+                            <a href="{{ url_for('profile', ticker='AMZN') }}" class="btn btn-sm"
+                              style="background: transparent; border: 1px solid white; color: white;">
+                              Amazon
+                            </a>
+
+                            <a href="{{ url_for('profile', ticker='META') }}" class="btn btn-sm"
+                              style="background: transparent; border: 1px solid white; color: white;">
+                              Meta
+                            </a>
+
+                            <a href="{{ url_for('profile', ticker='NVDA') }}" class="btn btn-sm"
+                              style="background: transparent; border: 1px solid white; color: white;;">
+                              Nvidia
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  
+              {% endif %}
+
+            </div>
+          </div>
+          <!-- End Carousel Item -->
+        </div>
+
+      </div>
+
+    </section><!-- /Hero Section -->
+
+    <!-- Featured Services Section -->
+    <section id="featured-services" class="featured-services section">
+
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="service-item item-cyan position-relative">
+              <div class="icon">
+                <i class="bi bi-activity"></i>
+              </div>
+              <a href="#" class="stretched-link">
+                <h3>GenAI Impact</h3>
+              </a>
+              <p>GenAI enhances ESG analysis, automates reporting, and improves decision-making with data-driven sustainability insights</p>
+            </div>
+          </div><!-- End Service Item -->
+
+          <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="service-item item-orange position-relative">
+              <div class="icon">
+                <i class="bi bi-broadcast"></i>
+              </div>
+              <a href="#" class="stretched-link">
+                <h3>ESG Evolution</h3>
+              </a>
+              <p>ESG has shifted from compliance to a strategic driver for sustainable growth and risk mitigation</p>
+            </div>
+          </div><!-- End Service Item -->
+
+          <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+            <div class="service-item item-teal position-relative">
+              <div class="icon">
+                <i class="bi bi-easel"></i>
+              </div>
+              <a href="#" class="stretched-link">
+                <h3>Sustainability Lens</h3>
+              </a>
+              <p>Evaluating businesses through ESG factors to assess long-term sustainability and impact</p>
+            </div>
+          </div><!-- End Service Item -->
+
+          <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
+            <div class="service-item item-red position-relative">
+              <div class="icon">
+                <i class="bi bi-bounding-box-circles"></i>
+              </div>
+              <a href="#" class="stretched-link">
+                <h3>Strategic Foresight</h3>
+              </a>
+              <p>Predicting ESG trends and risks to enhance resilience and informed decision-making</p>
+              <a href="#" class="stretched-link"></a>
+            </div>
+          </div><!-- End Service Item -->
+        </div>
+
+      </div>
+
+    </section><!-- /Featured Services Section -->
+
+    <!-- Features Section -->
+    <section id="features" class="features section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Features</h2>
+        <p>Comprehensive ESG insights, scenario forecasting, and data-driven sustainability analysis</p>
+      </div><!-- End Section Title -->
+
+      <div class="container">
+
+        <div class="row gy-4 align-items-center features-item">
+          <div class="col-md-5 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="100">
+            <img src="static/img/features-1.svg" class="img-fluid" alt="">
+          </div>
+          <div class="col-md-7" data-aos="fade-up" data-aos-delay="100">
+            <h3>Envision</h3>
+            <p class="fst-italic">  
+              Envision empowers businesses and investors with data-driven ESG scenario forecasting for informed decision-making.  
+           </p>  
+           <ul>  
+              <li><i class="bi bi-check"></i><span> Analyze future ESG risks and opportunities based on real-world data.</span></li>  
+              <li><i class="bi bi-check"></i><span> Model potential sustainability impacts and regulatory shifts.</span></li>  
+              <li><i class="bi bi-check"></i><span> Make strategic decisions aligned with evolving ESG landscapes.</span></li>  
+           </ul>
+          </div>
+        </div><!-- Features Item -->
+
+        <div class="row gy-4 align-items-center features-item">
+          <div class="col-md-5 order-1 order-md-2 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="200">
+            <img src="static/img/features-2.svg" class="img-fluid" alt="">
+          </div>
+          <div class="col-md-7 order-2 order-md-1" data-aos="fade-up" data-aos-delay="200">
+            <h3>Ecoscope</h3>
+            <p class="fst-italic">  
+              Ecoscope provides deep ESG insights, helping investors assess sustainability risks and opportunities effectively.  
+           </p>  
+           <ul>  
+              <li><i class="bi bi-check"></i><span> Gain comprehensive ESG analysis for informed investment decisions.</span></li>  
+              <li><i class="bi bi-check"></i><span> Track company sustainability performance across key environmental, social, and governance factors.</span></li>  
+              <li><i class="bi bi-check"></i><span> Identify ESG trends, risks, and compliance requirements proactively.</span></li>  
+           </ul>
+          </div>
+        </div><!-- Features Item -->
+
+        <div class="row gy-4 align-items-center features-item">
+          <div class="col-md-5 d-flex align-items-center" data-aos="zoom-out">
+            <img src="static/img/features-3.svg" class="img-fluid" alt="">
+          </div>
+          <div class="col-md-7" data-aos="fade-up">
+            <h3>Carbonsight</h3>
+            <p class="fst-italic">
+              Explore carbon emission patterns and scenario-based forecasts to support sustainable planning.
+            </p>
+            <ul>
+              <li><i class="bi bi-check"></i><span> Track emission metrics and progress across selected organizations.</span></li>
+              <li><i class="bi bi-check"></i><span> Evaluate alignment with climate goals and policy benchmarks.</span></li>
+              <li><i class="bi bi-check"></i><span> Access carbon reports and scenario analyses in various formats.</span></li>
+              <li><i class="bi bi-check"></i><span> Uncover insights to guide climate strategy and risk assessment.</span></li>
+            </ul>
+
+            
+          </div>
+        </div><!-- Features Item -->
+
+      </div>
+
+    </section><!-- /Features Section -->
+
+{% endblock %}
+

@@ -1,0 +1,95 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Report
+{% endblock %}
+
+{% block main %}
+
+<div class="page-title dark-background"></div>
+
+<!-- <h3 style>{{title}}</h3> -->
+ <h2 style="text-align: center; margin-top: 30px;"><b>{{ title }}</b></h2>
+ <div class="report-container">    
+    <div class="report">
+        <!-- Top section: Translate button & Download buttons -->
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 20px;">
+            <!-- Left: Translate Button -->
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span><b>Translate:</b></span>
+                <button id="toggle-lang" class="btn btn-outline-primary btn-sm">
+                    <i class="bi bi-translate"></i> <span>Français</span>
+                </button>
+            </div>
+
+            <!-- Right: Download Links -->
+            <div class="download-catalog" style="display: flex; gap: 10px;">
+                <a href="/download/{{filepath_en}}" target="_blank" class="btn btn-outline-primary btn-sm">
+                    <i class="bi bi-filetype-pdf"></i> <span>Report PDF</span>
+                </a>
+                <a href="/download/{{filepath_fr}}" target="_blank" class="btn btn-outline-primary btn-sm">
+                    <i class="bi bi-translate"></i> <span>Report PDF [Français]</span>
+                </a>
+            </div>
+        </div>
+
+        <br>
+        <!-- Report Content -->
+        <github-md id="english-content" style="text-align:justify; color:black; text-justify: inter-word;">{{ output_en }}</github-md>
+        <github-md id="french-content" style="text-align:justify; color:black; text-justify: inter-word; display:none;">{{ output_fr }}</github-md>
+        <br>
+    </div>
+</div>
+
+<!-- Language Toggle Script -->
+<script>
+    document.getElementById('toggle-lang').addEventListener('click', function() {
+        let engContent = document.getElementById('english-content');
+        let frContent = document.getElementById('french-content');
+        let btn = document.getElementById('toggle-lang');
+
+        if (engContent.style.display === "none") {
+            engContent.style.display = "block";
+            frContent.style.display = "none";
+            btn.innerHTML = '<i class="bi bi-translate"></i> <span>Français</span>';
+        } else {
+            engContent.style.display = "none";
+            frContent.style.display = "block";
+            btn.innerHTML = '<i class="bi bi-translate"></i> <span>English</span>';
+        }
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/gh/MarketingPipeline/Markdown-Tag/markdown-tag.js"></script> 
+<script src="https://cdn.jsdelivr.net/gh/MarketingPipeline/Markdown-Tag/markdown-tag-GitHub.js"></script>
+
+
+
+<style>
+    .report {
+        /* margin-top: 10px; */
+        background-color: var(--surface-color);
+        box-shadow: 0px 2px 20px rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
+        padding: 50px;
+        width: 80%;
+        align-items: center;
+   
+    }
+
+    .report-container {
+        padding: 50px;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+    }
+
+    .download-catalog a {
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+</style>
+
+{% endblock %}

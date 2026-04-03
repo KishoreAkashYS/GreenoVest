@@ -1,0 +1,188 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Envision
+{% endblock %}
+
+{% block main %}
+<div class="page-title dark-background"></div>
+
+<!--Scenario form-->
+<section id="scenario" class="scenario section" style="padding:0px;">
+  <div class="container">
+    <div class="formbold-main-wrapper">
+        <div id="form-container" class="formbold-form-wrapper" > 
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h4><i class="bi bi-globe2"></i> <b>{{ company }} - Sustainability Forecast</b></h4>
+                <p class="text-muted mb-0"><i>Predict, Plan, Prosper</i></p>
+            </div>
+            <div>
+                <a href="{{ url_for('profile', ticker=ticker) }}" class="text-decoration-none fw-bold" style="color: #1e4356;">
+                  <i class="bi bi-arrow-left"></i> Back to Dashboard
+                </a>
+            </div>
+        </div>
+          <form action="{{ url_for('scenario', ticker=ticker) }}" method="POST">
+              <div class="formbold-steps">
+                  <ul>
+                      <li class="formbold-step-menu1 active">
+                          <span>1</span>
+                          Scope 
+                      </li>
+                      <li class="formbold-step-menu2">
+                          <span>2</span>
+                          Scenario Details
+                      </li>
+                      <li class="formbold-step-menu3">
+                          <span>3</span>
+                          ESG Factors
+                      </li>
+                      <li class="formbold-step-menu4">
+                        <span>4</span>
+                        Review & Submit
+                    </li>
+                  </ul>
+              </div>
+      
+              <div class="formbold-form-step-1 active">
+                <div class="formbold-input-flex">
+                  <div>
+                    <label for="sector" class="formbold-form-label">
+                      Sector
+                    </label>
+                    <h5 class="formbold-form-value">{{ sector }}</h5> 
+                    <input type="hidden" id="sector" name="sector" value="{{ sector }}">
+                  </div>
+                  <div>
+                    <label for="company" class="formbold-form-label">Company Name</label>
+                    <h5 class="formbold-form-value">{{ company }}</h5>
+                    <input type="hidden" id="company" name="company" value="{{ company }}">
+                  </div>
+                </div>
+                <div class="formbold-input-flex">
+                  <div>
+                    <label for="geography" class="formbold-form-label">Location</label>    
+                    <input type="radio" name="geography" id="geography" value="North America" checked>
+                    <label for="geography" >  
+                        North America
+                    </label><br>
+                    <input type="radio" name="geography" id="geography" value="Canada" disabled>
+                    <label for="geography" >  
+                        Europe [Coming soon]
+                    </label><br>
+                    <input type="radio" name="geography" id="geography" value="Asia" disabled>
+                    <label for="geography" >  
+                        Asia [Coming soon]
+                    </label><br>
+                  </div>
+                  <div>
+                    <label for="timeframe" class="formbold-form-label">Forecast Timeline</label>
+                    <select name="timeframe" id="timeframe" class="formbold-form-input">
+                        <option value="1 Year">1 Year</option>
+                        <option value="3 Years">3 Years</option>
+                        <option value="5 Years & Beyond">5 Years & Beyond</option>
+                    </select>
+                  </div>
+                </div>    
+                <!-- <div class="formbold-input-flex">
+                  
+                </div> -->
+              </div>
+              
+              <div class="formbold-form-step-2">
+                <div>
+                    <label for="scenario-type" class="formbold-form-label">Type of ESG Scenario</label>
+                    <select name="scenario-type" id="scenario-type" class="formbold-form-input">
+                        <option value="Regulation">Regulation</option>
+                        <option value="Market Shock">Market Shock</option>
+                        <option value="Physical Risk">Physical Risk</option>
+                    </select>
+                  </div>
+                <div>
+                  <label for="message" class="formbold-form-label"> Explain your Scenario </label>
+                  <textarea
+                    rows="6"
+                    name="message"
+                    id="message"
+                    placeholder="Type your message"
+                    class="formbold-form-input"
+                  ></textarea>
+                </div>
+              </div>
+              
+              <div class="formbold-form-step-3">
+                <label for="environment" class="formbold-form-label">Key Environmental Metrics</label>
+                <select id="environment" name="environment" data-placeholder="Select Environmental Factors" multiple data-multi-select>
+                    <option value="Data center energy consumption">Data center energy consumption</option>
+                    <option value="carbon footprint">Carbon footprint</option>
+                    <option value="renewable energy use">Renewable energy use</option>
+                    <option value="Water usage and conservation">Water usage and conservation</option>
+                    <option value="Biodiversity impact">Biodiversity impact</option>
+                    <option value="Waste management and recycling">Waste management and recycling</option>
+                    <option value="Air pollution control">Air pollution control</option>
+                    <option value="Sustainable raw material sourcing">Sustainable raw material sourcing</option>
+                    <option value="Toxic emissions and chemical waste">Toxic emissions and chemical waste</option>
+                    <option value="Green infrastructure investment">Green infrastructure investment</option>
+                </select>
+                <label for="social" class="formbold-form-label">Key Social Metrics</label>
+                <select name="social" id="social" data-placeholder="Select Social Factors" multiple data-multi-select>
+                    <option value="Content moderation">Content moderation</option>
+                    <option value="Data privacy">Data privacy</option>
+                    <option value="workforce diversity">Workforce diversity</option>
+                    <option value="ethical AI practices">Ethical AI practices</option>
+                    <option value="Employee health and safety">Employee health and safety</option>
+                    <option value="Fair wages and labor rights">Fair wages and labor rights</option>
+                    <option value="Community engagement">Community engagement</option>
+                    <option value="Supply chain human rights">Supply chain human rights</option>
+                    <option value="Consumer protection and product safety">Consumer protection and product safety</option>
+                    <option value="Financial inclusion and accessibility">Financial inclusion and accessibility</option>
+                </select>
+                <label for="governance" class="formbold-form-label">Key Governance Metrics</label>
+                <select name="governance" id="governance" data-placeholder="Select Governance Factors" multiple data-multi-select>
+                    <option value="Board independence">Board independence</option>
+                    <option value="executive compensation">Executive compensation</option>
+                    <option value="regulatory compliance">Regulatory compliance</option>
+                    <option value="Shareholder rights">Shareholder rights</option>
+                    <option value="Audit committee effectiveness">Audit committee effectiveness</option>
+                    <option value="Ethical business practices">Ethical business practices</option>
+                    <option value="Anti-corruption and bribery policies">Anti-corruption and bribery policies</option>
+                    <option value="Tax transparency">Tax transparency</option>
+                    <option value="Political contributions and lobbying">Political contributions and lobbying</option>
+                    <option value="Cybersecurity governance and risk management">Cybersecurity governance and risk management</option>
+                </select>
+              </div>
+      
+              <div class="formbold-form-step-4">
+                <ul id="review-list"></ul>
+              </div>
+      
+              <div class="formbold-form-btn-wrapper">
+                <button class="formbold-back-btn">
+                  Back
+                </button>
+      
+                <button class="formbold-btn">
+                    Next Step
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_1675_1807)">
+                    <path d="M10.7814 7.33312L7.20541 3.75712L8.14808 2.81445L13.3334 7.99979L8.14808 13.1851L7.20541 12.2425L10.7814 8.66645H2.66675V7.33312H10.7814Z" fill="white"/>
+                    </g>
+                    <defs>
+                    <clipPath id="clip0_1675_1807">
+                    <rect width="16" height="16" fill="white"/>
+                    </clipPath>
+                    </defs>
+                    </svg>
+                </button>
+              </div>
+          </form>
+        </div>
+      </div>
+  </div>
+</section>
+
+<script src="{{ url_for('static', filename='js/scenario-form.js') }}"></script>
+<script src="{{ url_for('static', filename='js/multiselect.js') }}"></script> 
+
+{% endblock %}

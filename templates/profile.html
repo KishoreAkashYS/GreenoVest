@@ -1,0 +1,291 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Profile
+{% endblock %}
+
+{% block main %}
+
+<div class="page-title dark-background"></div>
+<div class="profile-esg">
+    <div class="profile-header">
+        <h2><b>{{ esg_data[1] }} ({{ esg_data[2] }})</b></h2>&nbsp
+        {% if esg_data[9] == 1 %}
+        <button id="analyse-ai-btn" class="ai-analyse-btn">
+        <i class="bi bi-stars"></i>
+        <span>Analyse with AI</span>
+        </button>
+        {% endif %}
+    </div><br>
+    <h5><b>Overview:</b></h5>
+    <p>{{ esg_data[8] }}</p>
+    <br>
+
+
+    <!-- Popup Modal -->
+    <div id="ai-popup" class="ai-popup-overlay">
+    <div class="ai-popup">
+        <h3 class="ai-title-gradient">AI-Powered Insights for {{esg_data[12]}}</h3>
+
+        <div class="steps-container">
+        <div class="step-btn" onclick="window.location.href='{{ url_for('scenario', ticker=esg_data[2]) }}'">
+            <i class="bi bi-graph-up"></i>
+            <h5>Sustainability Forecast</h5>
+            <p>Simulate ESG scenarios and forecast sustainability outcomes</p>
+        </div>
+        <div class="step-btn" onclick="window.location.href='{{ url_for('analysis', ticker=esg_data[2]) }}'">
+            <i class="bi bi-bar-chart-line"></i>
+            <h5>AI-Driven ESG Insights</h5>
+            <p>Analyse ESG and SEC data for informed decisions</p>
+
+        </div>
+        <div class="step-btn" onclick="window.location.href='{{ url_for('carbon', ticker=esg_data[2]) }}'">
+            <i class="bi bi-lightning-charge"></i>
+            <h5>Carbon Intelligence</h5>
+            <p>Transform carbon data into actionable, climate-smart strategies</p>
+        </div>
+        </div>
+
+        <button class="ai-close-btn" id="close-popup">&times;</button>
+    </div>
+    </div>
+
+    <ul class="nav nav-fill nav-tabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="fill-tab-3" data-bs-toggle="tab" href="#fill-tabpanel-3" role="tab" aria-controls="fill-tabpanel-3" aria-selected="false">ℹ️  About </a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" id="fill-tab-1" data-bs-toggle="tab" href="#fill-tabpanel-1" role="tab" aria-controls="fill-tabpanel-1" aria-selected="false">📊 Financials</a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" id="fill-tab-0" data-bs-toggle="tab" href="#fill-tabpanel-0" role="tab" aria-controls="fill-tabpanel-0" aria-selected="true">🌿 Sustainability</a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" id="fill-tab-2" data-bs-toggle="tab" href="#fill-tabpanel-2" role="tab" aria-controls="fill-tabpanel-2" aria-selected="false">📰 News & Trends</a>
+        </li>
+      </ul>
+      <div class="tab-content pt-5" id="tab-content">
+        <div class="tab-pane" id="fill-tabpanel-0" role="tabpanel" aria-labelledby="fill-tab-0">
+            <div id="dashboard" class="d-flex justify-content-center align-items-center gap-5">
+                
+                <!-- Left Section: ESG Risk Rating & Report -->
+                <div class="d-flex flex-column gap-4" style="width: 25%;">
+                    <!-- ESG Risk Rating Card -->
+                    <div class="p-4" style="border-radius: 12px; background: #ffffff; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);">
+                        <h3>
+                            ESG Risk Rating
+                            <span class="info-icon">
+                            <i class="fa-solid fa-circle-info"></i>
+                            <span class="info-tooltip">
+                                * ESG Risk Rating: Measures a company’s exposure to ESG risks. 
+                                <br>
+                                * Higher values indicate greater risk; lower values indicate lower risk.
+                                <br>
+                                * Ratings are sourced from Sustainalytics.
+                            </span>
+                            </span>
+                        </h3>
+
+                        <div style="display: flex; align-items: center; margin-top: 10px;">
+                            <b>
+                            <span class="esg-score-value">
+                                {{ esg_data[7] }}
+                            </span>
+                            </b>
+                            &nbsp;
+                            <div class="risk-indicator {{ risk[1] }}" style="margin-left: 10px; font-weight: bold;">
+                            {{ risk[0] }}
+                            </div>
+                        </div>
+                    </div>
+
+        
+                    <!-- ESG Report Card -->
+                    <div class="p-4" style="border-radius: 12px; background: #ffffff; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); position: relative;">
+                        <h3 style="display: flex; align-items: center; gap: 5px;">
+                            Carbon Intensity
+                            <span class="info-icon"><i class="fa-solid fa-circle-info"></i>
+                            <span class="info-tooltip">
+                                tCO₂e/M$: <br>
+                                Represents tons of CO₂ equivalent emitted per million dollars of revenue.
+                            </span>
+                            </span>
+                        </h3>
+                        {% set parts = esg_data[13].split(' ') %}
+                        <h4>
+                        <b>
+                            {% if parts|length > 1 and parts[1] == 'tCO₂e/M$' %}
+                            <span class="esg-score-value">{{ parts[0] }}</span>
+                            <span style="font-size: 1rem; color: #555;">{{ parts[1] }}</span>
+                            {% else %}
+                            <span class="esg-score-value">{{ esg_data[13] }}</span>
+                            {% endif %}
+                        </b>
+                        </h4>
+                    </div>
+                </div>
+        
+                <!-- Right Section: ESG Pie Chart -->
+                <div class="esg-chart p-4" style="width: 65%; border-radius: 12px; background: #ffffff; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);">
+                    <h5 class="esg-chart-title text-center">ESG Rating Breakdown</h5>
+                    <div id="esgChart" style="height: 350px;"></div>
+                </div>                
+            </div>
+            <br>
+        </div>
+    
+        <div class="tab-pane" id="fill-tabpanel-1" role="tabpanel" aria-labelledby="fill-tab-1">
+            <div id = "dashboard" class="d-flex justify-content-center align-items-center gap-5">
+                <!-- Left Section: Stock Info -->
+                <div class="d-flex flex-column gap-4" style="width: 20%;">
+                    <!-- Stock Price Block -->
+                    <div class="esg-card p-4" style="border-radius: 12px; background: #ffffff; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);">
+                        <h3 class="">Stock Price</h3>
+                        <h2 class="text-primary">$ <span id="currentPrice">{{ current_price }}</span></h2>
+                    </div>
+        
+                    <!-- SEC Report Block -->
+                    <div class="p-4" style="border-radius: 12px; background: #ffffff; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);">
+                        <h5 class="">SEC 10K Report</h5>
+                        <a class="btn btn-primary mt-3 px-4 py-2" href="{{ esg_data[10] }}" target="_blank" role="button">📄 View 10K file</a>
+                    </div>
+                </div>
+        
+                <!-- Right Section: Stock Graph -->
+                <div class="p-4" style="width: 65%; border-radius: 12px; background: #ffffff; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);">
+                    <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
+                        <button id="toggleChart" class="btn btn-primary">Switch to Candlestick</button>
+                    </div>
+                    <div id="chartContainer" style="height: 350px; width: 100%;"></div>
+                    <!-- <div id="chartContainer" style="height: 350px;"></div> -->
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="fill-tabpanel-2" role="tabpanel" aria-labelledby="fill-tab-2">
+            <h3 style="margin-left: 5%;">Recent News for <b>{{ esg_data[1] }}</b></h3>
+            <div class="news-container">
+                {% for article in stock_news %}
+                    <div class="news-item" onclick="toggleSummary(this)">
+                        <div class="news-header">
+                            <a href="{{ article['url'] }}" class="news-title" target="_blank">{{ article['title'] }}</a>
+                            <span class="news-date">{{ article['pubDate'] }}</span>
+                        </div>
+                        <p class="news-summary">{{ article['summary'] }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="tab-pane active" id="fill-tabpanel-3" role="tabpanel" aria-labelledby="fill-tab-3">
+            <div class="company-card fade-in">
+                <h4 class="tagline">A Snapshot of {{ esg_data[1]}}</h4>
+        
+                <div class="company-details">
+                    <div class="detail-item">
+                        <strong>Country </strong> <span>{{ about_data.country }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <strong>Sector </strong> <span>{{ about_data.sector }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <strong>ESG Report</strong> <span><a href="{{esg_data[11]}}">Sustainability Report</a></span>
+                    </div>
+                    <div class="detail-item">
+                        <strong>SEC Report</strong> <span><a href="{{esg_data[10]}}">SEC-10K Report</a></span>
+                    </div>
+                    <div class="detail-item">
+                        <strong>Year of Reporting</strong> <span>2024</a></span>
+                    </div>
+                    <div class="detail-item">
+                        <strong>Employees </strong> <span>{{ about_data.fullTimeEmployees }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <strong>Website </strong> 
+                        <a href="{{ about_data.website }}" target="_blank">{{ about_data.website }}</a>
+                    </div>
+                    <div class="detail-item">
+                        <strong>Total Revenue </strong> <span>${{ about_data.totalRevenue }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <strong>Revenue Growth</strong> <span>{{ "{:.2%}".format(about_data.revenueGrowth) }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <strong>{{ about_data.companyOfficers[0].title }}</strong> <span>{{ about_data.companyOfficers[0].name }}</span>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+
+      </div>
+
+
+    <script>
+        let stockData = {{ stock_data | safe }};
+        let ticker = "{{ ticker }}";
+        var esgScore = {
+            E: {{ esg_data[4] }},
+            S: {{ esg_data[5] }},
+            G: {{ esg_data[6] }}
+        };
+    </script>
+    <script>
+        function toggleSummary(newsItem) {
+            let summary = newsItem.querySelector('.news-summary');
+            summary.classList.toggle('expanded');
+        }
+    </script>
+    
+</div>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+<script src="{{ url_for('static', filename='js/profile.js') }}"></script>
+
+<style>
+  .info-icon {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    font-size: 0.8em;
+  }
+
+  .info-tooltip {
+    visibility: hidden;
+    opacity: 0;
+    width: 500px;
+    background-color: #7a7a7a;
+    color: #fff;
+    text-align: left;
+    border-radius: 8px;
+    padding: 8px 10px;
+    position: absolute;
+    z-index: 10;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: opacity 0.3s;
+    font-size: 0.8em;
+    justify-content: center;
+    
+  }
+
+  .info-icon:hover .info-tooltip {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .info-tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 6px;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent;
+    width: 18px;
+    height: 18px;
+  }
+
+</style>
+{% endblock %}

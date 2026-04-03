@@ -1,0 +1,219 @@
+ipcc_task:
+  description: >
+    Extract and summarize the key details of a given IPCC scenario provided by the user.
+    This includes global emission targets, required annual reduction rates, sector-specific
+    mitigation expectations, timeline milestones (e.g., Net Zero years), and overall carbon
+    budget implications. The goal is to convert high-level IPCC information into structured,
+    actionable data points relevant for corporate comparison.
+
+    Processing steps include:
+     - Retrieve ipcc scenario the user input:
+      User Input:
+        ipcc: {ipcc} [Selected IPCC scenario, e.g., SSP1-1.9]
+
+    - Identifying the scenario name and scope from user input
+    - Extact all the relevant details from the scenario which is required for downstream analysis
+    - Extract all the numerical data from the scenario
+    - Structuring the data in a format suitable for emissions alignment analysis
+    - Ensuring accuracy and consistency with IPCC reports
+  
+
+  expected_output: >
+    A structured summary of the selected IPCC scenario, including:
+      - Scenario Name and Source (e.g., SSP1-1.9, IPCC AR6)
+      - Global carbon budget (if available)
+      - Required global emission reduction pathway (e.g., % reduction per year)
+      - Milestone years (peak emissions, net-zero targets)
+      - Sector-specific guidance (if applicable)
+      - Key assumptions or constraints
+      - Any additional relevant details for corporate emissions comparison
+
+  agent: ipcc_agent
+
+
+analyse_task:
+  description: >
+    Perform a detailed analysis comparing the company's carbon emissions against the given IPCC scenario. 
+    Evaluate if the company is on track, identify gaps, and project future emissions under current trends. 
+    Suggest emission reduction targets needed to align with the scenario. This task supports decision-making by highlighting
+    risks, opportunities, and actionable recommendations.
+
+    Processing steps include:
+    - Retrieve the user input:
+      User Input:
+        company: {company} [Name of the company to analyze]
+        sector: {sector} [Industry sector the company operates in]
+        forecast: {forecast} [No of years in furture to consoder for forecasting, e.g., 1 Year, 2 Years, etc.]
+        timeframe: {timeframe} [No of historical years of emissions data to consider for analysis]
+        ipcc: {ipcc} [Selected IPCC scenario, e.g., SSP1-1.9]
+        scope: {scope} [Selected scope for emissions analysis, e.g., Scope 1, Scope 2, Scope 3]
+        preference: {preference} [Investment preference given by the user]
+
+    - Use the obj_file_read tool to retrieve the carbon emission and scope data for a company. 
+      You should pass the report_name as "CARBON" and company in the user input to get the company emissions data for the company.
+    - Use the obj_file_read tool to retrieve the financial details for a company. 
+      You should pass the report_name as "SEC" and company in the user input to get the financial details for the company.
+    - Retrieve the structured IPCC scenario data from the ipcc_agent for the given scenario in user input.
+    - Identify the financial implications of the company based on the scope and the scenario selected in the user input.
+    - Analyze historical emissions trends and current performance of the company
+    - Check whether the company is aligning with investment preference given by the user
+    - Calculate deviation metrics (absolute and percentage difference)
+    - Project future emissions based on current trajectory
+    - Identify gaps between company emissions and IPCC scenario pathway  
+    - Recommend annual reduction targets to achieve Alignment
+    
+  expected_output: >
+    A comprehensive comparative analysis including:
+      - Company’s historical emissions by year and scope
+      - Visualization: Company trajectory vs. IPCC scenario path
+      - Deviation metrics: absolute (tCO₂e) and percentage difference
+      - Projected future emissions (if no change)
+      - Reduction needed per year to stay aligned
+      - Summary conclusion: On track or not
+      - High-level recommendations to bridge the gap
+
+  agent: analyser_agent
+
+reporting_task:
+  description: >
+    Generate a Comprehensive Carbon Emissions Scenario Report, based on the response from analysis agent, 
+    systematically benchmarking a company’s emissions (per user-selected scope and IPCC scenario) 
+    against the selected IPCC scenario, 
+    providing a detailed analysis of the company’s emissions trajectory 
+    and the company’s alignment with the selected IPCC scenario 
+    and providing actionable insights on future alignment, compliance, and strategic next steps.
+    
+    Processing steps include:
+    - Retrieve the structured IPCC scenario data from the ipcc_agent
+    - Retrieve the analysis results from the analyser_agent
+    - Compile the report sections based on the analysis findings in the expected_output format
+    - Ensure clarity, visual engagement, and actionable insights for stakeholders
+    - The report should be in the expected_output format.
+    - The output should stick to the expected_output template.
+    - The report should be in markdown format and should not contain any additional information or preamble or thoughts.
+
+  expected_output: >
+    # Carbon Emissions Report
+
+    ## 1. Carbon Footprint Analysis
+
+    - **Company Name:** [Company Name]  
+    - **Industry Sector:** [Industry/Sector]  
+    - **Scope Selected:** [Scope 1 / Scope 2 / Scope 3 / Combination]  
+    - **Total Emissions Summary:** 
+        - Scope : [Total tCO₂e across all years] 
+    - **Investment Preference:** [Net Zero / Carbon Neutral / Science Based Target]
+         [Describe if the company is aligned with the investment goal or not]
+    - **Forecast Window:** [No of years in future considered for forecasting given by user]
+    - **Timeframe for Analysis:** [No of years of historical data considered for analysis by the user]
+
+
+    ## 2. Year-over-Year Trends
+
+    ### Company Historical and Current Emissions 
+    [Add total emissions based on historical timeframe mentioned for each scope if more than one scope is selected]
+
+    | Year     | Scope   (tCO₂e) | ... | 
+    |----------|-----------------| ... |
+    | [Year 1] | [Data]          | ... | 
+    | [Year 2] | [Data]          | ... | 
+    | ...      | ...             | ... | 
+
+ 
+
+    ## 3. IPCC Scenario Projection 
+
+    - **Selected IPCC Scenario:** [SSP1-1.9 / SSP1-2.6 / SSP2-4.5 / SSP3-7.0 / SSP5-8.5]  
+    - **Scenario Brief:**  
+      [Describe the scenario and its main goals as key points and 
+      their values, e.g., temperature targets, emissions trajectory, carbon budget thresholds]
+
+    ## Scenario Emissions Pathway vs. Company Trajectory
+    [This comparsion should include comparison of scope and company's emission, if the scope and scenario have these values else compare accordingly based on the scope selected]
+
+    | Year     | Scenario Emissions Target (tCO₂e) | Company Emissions (tCO₂e) | Difference (tCO₂e) |
+    |----------|-----------------------------------|----------------------------|--------------------|
+    | [Year 1] | [Scenario Target]                 | [Company Emissions]        | [Gap/Exceedance]   |
+    | [Year 2] | [Scenario Target]                 | [Company Emissions]        | [Gap/Exceedance]   |
+    | ...      | ...                               | ...                        | ...                |
+
+
+    ## 4. Risk Assessment
+
+    - ### Major Emission Hotspots
+      [Based on the scope and scenario selected, highlight the major emission hotspots in the company]
+        - Scope 1: [e.g., manufacturing plants in Region X]  
+        - Scope 2: [e.g., purchased electricity in high-carbon regions]  
+        - Scope 3: [e.g., upstream logistics, product use-phase]
+
+
+    - ### Transition Risks 
+      - [include potential risks]
+      - **Regulatory Risk:** Exposure to carbon pricing or compliance costs  
+      - **Reputational Risk:** Misalignment with stakeholder or investor climate expectations  
+      - **Operational Risk:** Potential supply chain disruptions or input material shifts  
+      - **Financial Risk:** Asset stranding, cost of capital escalation
+
+    - ###  Financial Impact on Carbon Emissions
+      [Extact and highlight the data(preferably numerical) on financial impact based on the sec financial data from the analysis agent ]
+
+
+
+    ## 5. Opportunities for Decarbonization
+    [Highlight key words and phrases in bold for emphasis]
+
+    - ### High-Impact Areas
+        - [Example: Switching to renewable electricity in Scope 2-heavy regions]  
+        - [Example: Electrifying fleet vehicles to reduce Scope 1 emissions]  
+        - [Example: Supplier engagement to address Scope 3 emissions]  
+
+    - ### Sectoral Benchmarks
+        - [Comparison to average industry performance or Science-Based Targets benchmarks]  
+
+    - ### Technology & Innovation Levers
+        - Energy efficiency upgrades  
+        - Circular economy initiatives  
+        - Carbon capture, utilization, and storage (CCUS)  
+        - Alternative materials or green fuels  
+
+
+
+    ## 6. Recommendations
+
+      [Highlight key words and phrases in bold for emphasis]
+
+      [If Company is *Not Aligned* with Scenario Targets, give the gaps and recommendations to achieve alignment with the selected IPCC scenario:] 
+
+      Recommendations to achieve alignment with the selected IPCC scenario:
+
+      - Accelerate emission reduction programs across selected scope(s)  
+      - Increase sourcing of renewable energy and improve energy efficiency  
+      - Redesign logistics and supply chain models to reduce indirect emissions  
+      - Set measurable interim targets and reassess progress annually  
+      - Explore carbon offsetting only as a supplementary action  
+
+     [If Company is *Aligned* with Scenario Target, give the recommendations to maintain alignment with the selected IPCC scenario:]
+
+      Recommendations to maintain alignment with the selected IPCC scenario:
+
+      - Maintain momentum and enhance data transparency  
+      - Set stretch targets beyond current alignment  
+      - Monitor changes in policy, market conditions, and stakeholder expectations  
+      - Continue innovation in clean technologies and low-carbon operations  
+
+
+
+    ## 7. Conclusion
+
+    - The company’s current emissions profile is **[aligned / not aligned]** with the **[Selected IPCC Scenario]** trajectory.  
+    - Alignment status is determined based on emissions gap analysis across Scope 1, 2, and/or 3.  
+    - To **[achieve / sustain]** alignment, the company must focus on:  
+      - [**Key Action 1:** e.g., Implementing energy efficiency measures] 
+      - [**Key Action 2:** e.g., Engaging suppliers on Scope 3 emissions]
+      - [**Key Action 3:** e.g., Investing in renewable energy projects]
+
+    **Sustained commitment and proactive transformation are critical for climate resilience and competitive advantage.**
+
+
+  agent: report_gen_agent
+  

@@ -1,0 +1,401 @@
+esg_task:
+  description: >
+    This task extracts all **key ESG-related insights** from the company's ESG report, focusing on the scenario 
+    and ESG focus areas provided by the user. The extracted information will serve as **the foundation for downstream agents**, 
+    ensuring that all relevant details about the company's **past projects, ESG performance, and investments** are available 
+    for scenario modeling. Use the obj_file_read tool properly. Pass the report name "ESG" and Company name as given by the user to fetch
+    report.
+    **Extraction Guidelines:**
+    1. **Align with User Inputs**  
+       - Ensure the output is directly relevant to the **Company**, **Sector**, and **Scenario** provided.  
+       - Focus only on **ESG Focus Areas** (Environmental, Social, Governance) selected by the user.  
+    2. **Company ESG Overview**  
+       - Provide a high-level summary of the company's **sustainability goals and commitments**.  
+       - Extract **notable ESG milestones** (e.g., carbon neutrality targets, diversity initiatives).  
+    3. **Past & Ongoing ESG Projects**  
+       - Identify **major ESG-related initiatives** undertaken by the company in the past.  
+       - Include **impact metrics** where available (e.g., emissions reduced, community impact).  
+       - Extract **financial investments** made in sustainability efforts.  
+    4. **ESG Performance & Ratings**  
+       - Extract and analyze the company's **ESG scores/rankings** (if available).  
+       - Identify key **ESG performance trends** over time.  
+       - Highlight areas where the company has **improved or regressed**.  
+    5. **Investment & Financial Impact**  
+       - Identify **capital allocated for ESG initiatives** (e.g., green bonds, renewable energy investments).  
+       - Summarize how these investments have **impacted financial performance**.  
+       - Extract details on **ESG-linked executive compensation and shareholder influence**.  
+    6. **Regulatory & Compliance Factors**  
+       - Identify **any compliance risks** flagged in past ESG reports.  
+       - Extract mentions of **legal actions, fines, or ESG-related lawsuits**.  
+       - Summarize **corporate governance and transparency measures**.  
+    **Processing Steps:**  
+    - Read and process the **markdown ESG report** using `FileTool`.  
+    - Extract and structure **all necessary ESG data** based on the defined focus areas.  
+    - Format data **for seamless integration** into the next agent (SEC, News, Policy, etc.).  
+    User Inputs
+    Company: {company}  
+    Sector: {sector}  
+    Geography: {geography}
+    Market Cap: {market_cap}
+    Timeframe: {timeframe}
+    Scenario: {scenario}  
+    ESG Focus Areas
+    Environment: {env}
+    Social: {soc}
+    Governance: {gov}
+  expected_output: >
+    Give the detailed report following the description
+  agent: esg_agent
+
+sec_task:
+  description: >
+    This task extracts all **SEC-related ESG insights** from company filings, focusing on **risk assessment, 
+    governance transparency, and financial disclosures** relevant to ESG scenario modeling. 
+    The extracted information ensures that **legal and regulatory aspects** are integrated into the ESG analysis.
+    Use the obj_file_read tool properly. Pass the report name "SEC" and Company name as given by the user to fetch
+    report.
+    **Extraction Guidelines:**
+    1. **Align with User Inputs**  
+       - Ensure the output is directly relevant to the **Company**, **Sector**, and **Scenario** provided.  
+       - Prioritize ESG-related data from **SEC filings 10-K**.  
+    2. **Regulatory ESG Disclosures**  
+       - Extract **ESG-related sections from SEC filings** (e.g., sustainability risks, governance policies).  
+       - Identify **financial commitments towards ESG initiatives**.  
+       - Retrieve **ESG-linked executive compensation policies** from DEF 14A proxy filings.  
+    3. **Risk & Compliance Analysis**  
+       - Extract **risk factors related to climate change, governance failures, and ESG controversies**.  
+       - Identify **any SEC-reported non-compliance issues or fines**.  
+       - Summarize **legal risks, regulatory actions, and pending lawsuits** affecting ESG performance.  
+    4. **Corporate Governance & Shareholder Influence**  
+       - Identify **board structure, independence, and voting power distribution**.  
+       - Analyze **shareholder resolutions and their impact on ESG policies**.  
+       - Extract **any activist investor actions related to sustainability**.  
+    5. **Financial ESG Impact & Market Risks**  
+       - Retrieve **disclosures on ESG-linked capital allocation**.  
+       - Identify **any SEC-flagged financial risks due to ESG factors**.  
+       - Summarize how **ESG policies influence revenue, stock valuation, and investor confidence**.  
+    **Processing Steps:**  
+    - Read and process **SEC filings** using `FileTool` and `VectorDBQA`.  
+    - Extract **only ESG-relevant sections** to avoid financial noise.  
+    - Format data **for downstream use by the next agents** (News, Policy, Report Generation).  
+    User Inputs
+    Company: {company}  
+    Sector: {sector}  
+    Geography: {geography}
+    Market Cap: {market_cap}
+    Timeframe: {timeframe}
+    Scenario: {scenario}  
+    ESG Focus Areas
+    Environment: {env}
+    Social: {soc}
+    Governance: {gov}
+  expected_output: >
+    Give the detailed report following the description
+  agent: sec_agent
+
+news_task:
+  description: >
+    This task extracts **only the most relevant ESG-related news insights** for the selected **company, sector, and scenario**, ensuring that scenario modeling is informed by **real-time market sentiment, controversies, and emerging ESG trends**.
+    Use the obj_file_read tool properly. Pass the report name "NEWS" and Company name as given by the user to fetch
+    report.
+    **Extraction Guidelines:**
+    1. **Align with User Inputs**  
+       - Filter news articles based on the **Company**, **Sector**, and **Scenario**.  
+       - Extract **only the information that directly impacts the ESG focus areas** chosen by the user.  
+    2. **Recent ESG-Related News Highlights**  
+       - Identify **key news events that have affected the company's ESG standing**.  
+       - Extract **positive/negative ESG-related actions and their consequences**.  
+       - Retrieve **company statements, market reactions, and competitor responses**.  
+    3. **Public & Investor Sentiment Analysis**  
+       - Extract **media sentiment trends** (Is the company being praised or criticized?).  
+       - Identify **social media/public perception shifts related to ESG policies**.  
+       - Summarize **analyst/investor concerns** regarding ESG risks.  
+    4. **Regulatory & Legal Developments in the News**  
+       - Identify **new ESG regulations or policy changes that impact the company**.  
+       - Extract **mentions of government investigations, legal actions, or compliance issues**.  
+    5. **Competitive ESG Positioning from the News**  
+       - Compare how the company's **ESG actions and reputation** stack up against competitors.  
+       - Identify whether the company is **leading, lagging, or facing industry-wide ESG pressure**.  
+    **Processing Steps:**  
+    - Read and process the **news analysis report** using `FileTool`.  
+    - Extract **only scenario-relevant details** from the report.  
+    - Format the output for **seamless integration** into the next agents (Policy, Report Generation).  
+    User Inputs
+    Company: {company}  
+    Sector: {sector}  
+    Geography: {geography}
+    Market Cap: {market_cap}
+    Timeframe: {timeframe}
+    Scenario: {scenario}  
+    ESG Focus Areas
+    Environment: {env}
+    Social: {soc}
+    Governance: {gov}
+  expected_output: >
+    Detailed report extracting the key information for the given scenario.
+  agent: news_agent
+
+compliance_task:
+  description: >
+    Extract **key ESG compliance requirements** that apply to the given **company, sector, and scenario**. 
+    The Compliance Agent will use its **LLM knowledge** to retrieve insights from major compliance frameworks, 
+    ensuring the scenario adheres to relevant laws and industry regulations.  
+    ### **Extraction Guidelines:**  
+    1. **Align with User Inputs**  
+      - Extract only compliance insights **relevant to the Company, Sector, and ESG Focus Areas**.  
+      - Ensure compliance data is **up-to-date and scenario-specific**.  
+    2. **Sustainability Accounting Standards Board (SASB) Standards**  
+      - Identify sector-specific **sustainability reporting guidelines** under SASB.  
+      - Extract key material risks and disclosure requirements for ESG transparency.  
+    3. **Securities and Exchange Commission (SEC) Disclosure Regulations**  
+      - Identify **mandatory ESG disclosures** for publicly traded companies.  
+      - Highlight SEC’s **climate-related risk reporting** and financial materiality rules.  
+    4. **Nasdaq Board Diversity Requirements**  
+      - Summarize board diversity disclosure requirements and governance expectations.  
+      - Highlight compliance thresholds and penalties for non-adherence.  
+    5. **Department of Labor (DOL) Legislation for Financial Advisors**  
+      - Extract compliance requirements for **ESG-related investment strategies**.  
+      - Identify fiduciary duties and ethical investment practices under DOL guidelines.  
+    6. **Global Reporting Initiative (GRI) Standards**  
+      - Summarize internationally recognized ESG reporting **best practices**.  
+      - Identify material ESG disclosures required for **stakeholder transparency**.  
+    7. **Impact of Compliance on Scenario Forecasting**  
+      - Summarize how **existing compliance rules affect the feasibility** of the ESG scenario.  
+      - Identify **regulatory risks and opportunities** based on compliance trends.  
+    ### **Processing Steps:**  
+    - Use your knowledge to **fetch and extract key compliance data** relevant to the user-defined scenario.  
+    - Ensure extracted information is **concise, actionable, and scenario-focused**.  
+    - Format the output as a **detailed narrative**, ensuring clarity for decision-making.
+    User Inputs
+    Company: {company}  
+    Sector: {sector}  
+    Geography: {geography}
+    Market Cap: {market_cap}
+    Timeframe: {timeframe}
+    Scenario: {scenario}  
+    ESG Focus Areas
+    Environment: {env}
+    Social: {soc}
+    Governance: {gov}
+  expected_output: >
+    ### **Expected Output for Compliance Agent**  
+    The extracted compliance insights should be **structured but not in JSON or markdown**, 
+    ensuring the LLM understands the context and can be used for scenario forecasting. Below is the expected **output format**:
+ 
+    ### **Key Compliance Requirements**  
+    #### **1. SASB Standards Compliance**  
+    - [Identify sector-specific ESG disclosure guidelines]  
+    - [Highlight material risks that must be reported]  
+    - [Summarize any recent SASB regulatory updates]  
+    #### **2. SEC Disclosure Regulations**  
+    - [Mandatory ESG reporting requirements under SEC]  
+    - [Climate risk disclosure obligations]  
+    - [Financial materiality requirements relevant to the scenario]  
+    #### **3. Nasdaq Board Diversity Compliance**  
+    - [Board diversity disclosure expectations]  
+    - [Minimum compliance thresholds]  
+    - [Penalties for non-compliance]  
+    #### **4. DOL Legislation for ESG Investments**  
+    - [Fiduciary responsibilities for ESG-driven financial decisions]  
+    - [DOL regulations affecting investment strategies]  
+    - [Impact of compliance rules on investor decisions]  
+    #### **5. GRI Standards & Reporting**  
+    - [Mandatory vs. voluntary GRI disclosures]  
+    - [Material ESG topics requiring transparency]  
+    - [Stakeholder communication expectations]  
+    ### **Regulatory Impact on the given Scenario**  
+    - **Compliance Challenges:** [Summarize key legal and regulatory risks for the given scenario]  
+    - **Opportunities:** [Identify strategic benefits of ESG compliance]  
+    - **Required Adjustments:** [Suggest changes needed to meet compliance standards]  
+ 
+  agent: compliance_agent
+
+scoring_task:
+  description: >  
+    The ESG Scoring Agent evaluates how the given scenario impacts the company's ESG score.  
+    It assigns a projected score based on the expected scenario's influence on Environmental,  
+    Social, and Governance factors. Use the db_read tool for fectching the updated E S G and total risk ratings score.
+    Send the sector you analyse the scenario. Do a peer analysis as well
+    User Inputs:
+    Company: {company}
+    Sector: {sector}
+    Scenario: {scenario}  
+  expected_output: >  
+    **ESG Score Projection:** [New projected ESG ratings] 
+    Give a tabular data of the projected E S G and Total risk ratings of the current company and peers. 
+    **Impact Analysis:** [Brief explanation of how the scenario affects the ESG score]
+  agent: esg_scoring_agent
+
+reporting_task:
+  description: >
+    This task generates a comprehensive ESG Scenario Analysis Report, consolidating insights from multiple agents to evaluate 
+    scenario-driven ESG, financial, regulatory, and market impacts for any company.The report provides structured narrative and 
+    tabular outputs, ensuring investor-ready clarity with data-driven explanations. Do not include backtick in response(```). 
+    The Reason and Explanation columns should provide clear, concise justifications for each data point.
+
+    **Data Sources:**  
+    - **ESG Agent:** ESG scores, sustainability performance, emissions data, and sub-factor trends.  
+    - **Financial Agent:** Revenue, cost projections, and financial implications under the scenario.  
+    - **Compliance Agent:** SFDR, EU Taxonomy, ISSB/SEC alignment and readiness.  
+    - **Peer Agent:** Sector benchmarks and peer ESG comparisons.  
+    - **Sentiment Agent:** Investor, media, and public sentiment metrics.  
+    - **Risk Agent:** ESG-adjusted risk and return metrics.  
+
+    **Report Structure & Content:**  
+    **1. Scenario Overview**  
+    - Summarize the chosen **ESG or climate scenario**, its **type (Physical / Transition / Market shock)**, and **scope (Company / Sector / Region)**.  
+    - Include **forecast year, positive and negative impacts**, and their reasoning.  
+    - Provide a high-level **context and summary table** describing scenario details. 
+    - Objective: Generate a clear summary of the ESG or climate scenario, including its scope, forecast horizon, and potential impacts.
+    - Description: Generate and explain the type of scenario (e.g., carbon tax, flood risk, policy change), its relevance to the company, and highlight positive and negative ESG and financial implications.
+    - Forcasted Timeframe: {timeframe}
+     
+
+    **2. ESG Score Projection** *(Tabular Format)*  
+    - Compare **current vs projected ESG scores** across Environmental, Social, and Governance pillars.  
+    - Show **percentage change** and include **Reason** for change.  
+    - Indicate trend (↑ / ↓ / →) for quick interpretation.  
+    - Purpose: Generate and show how ESG performance evolves under the given scenario, helping identify which dimensions improve or decline.
+    - Context: Generate and compare current and projected ESG scores across Environmental, Social, and Governance pillars, quantify percentage change, and explain reasons behind the movement.
+    
+
+    **3. Regulatory & Compliance Impact** *(Tabular Format)*  
+    - Show **current and projected alignment** with frameworks such as SFDR, EU Taxonomy, ISSB/SEC.  
+    - Include **Reason for Change** explaining improvement or deterioration.  
+    - Highlight **regulatory readiness and exposure**.  
+    - Intent: Explain and highlight how the company’s alignment with major ESG frameworks shifts under the scenario.
+    - Explanation: Generate and present current versus projected compliance with SFDR, EU Taxonomy, and ISSB/SEC standards, indicating where readiness improves or risks emerge.
+    
+
+    **4. Peer & Benchmark Comparison** *(Tabular Format)*  
+    - Compare **company ESG scores** against **sector peers and benchmarks**.  
+    - Show **current vs projected ESG scores**, **relative position (Above/On Par/Below)**, and clear **Reason**.  
+    - Provide insights into **competitive positioning and ESG differentiation**. 
+    - The values be calculated precisely based on the scenario and the data fetched from the scoring agent. 
+    - Goal: Generate and compare company ESG performance against peers and industry benchmarks to gauge relative positioning.
+    - Detail: Generate and display current and projected ESG scores, benchmark comparisons, and reasons for deviations in performance.
+
+
+    **5. Market Sentiment & Perception** *(Tabular Format)*  
+    - Evaluate **investor confidence, media tone, and public trust** before and after the scenario.  
+    - Include **Current**, **Projected**, **Change**, and **Reason** columns.  
+    - Identify **reputational or perception-related risks and opportunities**.  
+    - Objective: Explain the changes in investor confidence, media tone, and public trust due to the scenario.
+    - Explanation: Generate and show current versus projected sentiment values, quantify the change, and describe drivers such as carbon exposure, regulation, or reputation risk.
+    
+
+    **6. ESG-adjusted Risk & Return Analysis** *(Tabular Format)*  
+    - Compare **current vs projected return, volatility, and ESG-adjusted risk**.  
+    - Include **Change** and **Reason** columns explaining financial sensitivity to ESG shifts.  
+    - Provide insight into **risk-adjusted investment attractiveness**. 
+    - Purpose: Explain and evaluate how scenario-driven ESG factors influence risk and return expectations.
+    - Context: [Explain how present quantitative shifts in expected return, volatility, and ESG-adjusted risk, supported by explanatory reasoning.
+     
+
+    **7. Strategic Forecast & Recommendations** *(Tabular Format)*  
+    - Provide a **recommendation (Engage / Hold / Divest)** by doing a detailed analysis covering multiple views of same scenario.  
+    - Explain **ESG, financial, and regulatory factors** behind the decision.  
+    - Include **expected portfolio or strategic benefits** under the given scenario.  
+    - Objective: [Explain and Translate scenario outcomes into actionable ESG and portfolio decisions.]  \n
+    - Explanation: [Generate and Suggest whether to Engage, Hold, or Divest, providing justification based on ESG, financial, and regulatory dimensions.]  \n
+    
+
+    **8. Final Verdict**  
+    - Summarize **overall scenario assessment** with key strengths, challenges, and outcome classification (**Favorable / Neutral / Risky**).  
+    - Provide **final recommendations** for improving ESG alignment, risk resilience, and investor confidence.  
+
+    **Processing Steps:**  
+    - Aggregate structured insights from all agents.  
+    - Format report with a **blend of text and tabular data** for clarity.  
+    - Ensure content remains **generic and adaptive** for any company input.  
+    - Don't include *Purpose and Context* in the final report that is for understanding only.
+ 
+  expected_output: >  
+    Do not add preamble and backticks in the response (```)
+    Don't include Purpose and Context in the final report and each section should contain only the information mentioned in the expected output.
+
+    # **Forecast Report for [Company XYZ]**
+    
+    ## 1. Scenario Overview  
+    | **Field** | **Description** |  
+    |---|---|  
+    | **Scenario** | [Scenario Description] |  
+    | **Scope** | [Company / Sector / Geography] |  
+    | **Forecast Year** | [YYYY] |  
+    | **Positive Impacts** | [List of ESG or financial benefits] |  
+    | **Negative Impacts** | [List of ESG or operational challenges] |  
+    | **Forecasted Timeframe** | {timeframe} |
+
+    - **Key Insights:** Explain how the scenario affects sustainability strategy and overall outlook.
+    ---  
+
+    ## 2. ESG Score Projection  
+    | **ESG Dimension** | **Current Score** | **Projected Score** | **Change (%)** | **Reason** |  
+    |---|---|---|---|---|  
+    | Environmental | [Value] | [Value] | [Δ%] | [Explanation] |  
+    | Social | [Value] | [Value] | [Δ%] | [Explanation] |  
+    | Governance | [Value] | [Value] | [Δ%] | [Explanation] |  
+    | **Total ESG Score** | [Value] | [Value] | [Δ%] | [Summary of ESG trajectory] |  
+    - **Interpretation:** [Comment on overall ESG improvement or decline.]  
+    ---  
+
+    ## 3. Regulatory & Compliance Impact  
+    | **Framework** | **Current Alignment** | **Projected Alignment** | **Reason for Change** |  
+    |---|---|---|---|  
+    | SFDR | [Current %] | [Projected %] | [Explanation] |  
+    | EU Taxonomy | [Current %] | [Projected %] | [Explanation] |  
+    | ISSB / SEC | [Current Level] | [Projected Level] | [Explanation] |  
+
+    - **Key Takeaway:** Summarize compliance readiness and emerging regulatory gaps.
+    ---  
+
+    ## 4. Peer & Benchmark Comparison  
+    | **Entity** | **Current ESG** | **Projected ESG** | **Benchmark ESG** | **Position** | **Reason** |  
+    |---|---|---|---|---|---|  
+    | [Selected Company] | [Score] | [Score] | [Score] | [On Par / Above / Below] | [Explanation] |  
+    | [Peer 1] | [Score] | [Score] | [Score] | [Comparison] | [Reason] |  
+    | [Peer 2] | [Score] | [Score] | [Score] | [Comparison] | [Reason] | 
+
+    - **Observation:** Assess company competitiveness and sector alignment. 
+    ---  
+
+    ## 5. Market Sentiment & Perception  
+    | **Parameter** | **Current** | **Projected** | **Change** | **Reason** |  
+    |---|---|---|---|---|  
+    | Investor Confidence | [Value] | [Value] | [Δ%] | [Explanation] |  
+    | Media Tone | [Neutral / Positive / Negative] | [Change] | [Qualitative Shift] | [Explanation] |  
+    | Public Trust | [Value] | [Value] | [Δ%] | [Explanation] |  
+
+    - **Interpretation:** Summarize how sentiment shifts affect market perception.
+    ---  
+
+    ## 6. ESG-adjusted Risk & Return Analysis  
+    | **Metric** | **Current** | **Projected** | **Change** | **Reason** |  
+    |---|---|---|---|---|  
+    | Expected Return | [Value] | [Value] | [Δ%] | [Explanation] |  
+    | Volatility | [Low / Medium / High] | [Projected Level] | [Direction] | [Explanation] |  
+    | ESG-adjusted Risk | [Value] | [Value] | [Δ%] | [Explanation] |  
+
+    - **Key Insight:** Summarize overall portfolio and financial implications.
+    ---  
+
+    ## 7. Strategic Forecast & Recommendations  
+    | **Level** | **Action** | **Reason** |  
+    |---|---|---|  
+    | Company ([Company Name]) | [Engage / Hold / Divest] | [Justification and rationale] |  
+
+    - **Recommendation Insight:** Summarize strategic benefits or engagement rationale. 
+    ---  
+
+    ## 8. Conclusion 
+    - **Challenges:** [Key risks or weaknesses identified based on ESG].  \n
+    - **Strengths:** [Key ESG and operational positives].  \n
+    - **Summary:** [Generate and highlight overall scenario outcome, key positives, challenges, and next-step recommendations for long-term improvement as bullet points.]  \n
+    - **Overall Sentiment:** [Favorable / Neutral / Risky].  \n
+    - **Actionable Recommendations for investors, portfolio manager or related audience:**  
+    
+        - 1. [Action 1]  
+        - 2. [Action 2]  
+        - 3. [Action 3]  
+    - **Conclusion:** Summarize investment and ESG outlook concisely.
+  agent: report_gen_agent
