@@ -1,0 +1,467 @@
+/* Newly added code */
+.news-container {
+    max-width: 800px;
+    width: 100%;
+    margin-left: 5%;
+  }
+  .news-item {
+    background: white;
+    padding: 20px;
+    margin: 25px 0;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    cursor: pointer;
+  }
+  .news-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
+  }
+  .news-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .news-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #0073e6;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .news-title:hover {
+    color: #005bb5;
+    text-decoration: underline;
+  }
+  .news-date {
+    font-size: 14px;
+    color: #666;
+    white-space: nowrap;
+  }
+  .news-summary {
+    font-size: 16px;
+    color: #333;
+    line-height: 1.5;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Limit to 2 lines */
+    -webkit-box-orient: vertical;
+    transition: max-height 0.3s ease-in-out;
+  }
+  .expanded {
+    -webkit-line-clamp: unset; /* Show full text */
+  }
+  
+  
+  .container-esg {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 60%;
+    text-align: center;
+  }
+  
+  .esg-score-card {
+    background: linear-gradient(to right, #4CAF50, #2E7D32);
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .esg-report-card {
+    background: #f8f9fa;
+  }
+  
+  .report-button {
+    font-size: 16px;
+    padding: 10px 20px;
+  }
+  
+  .esg-chart-card {
+    width: 70%;
+  }
+  
+  #esgChart {
+    height: 400px;
+  }
+  
+  .risk-indicator {
+    display: inline-block;
+    padding: 8px 5px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    border-radius: 5px;
+    text-align: center;
+    width: 110px;
+  }
+  
+  .negligible-risk { background-color: #2ECC71; }  /* Green */
+  .low-risk { background-color: #27AE60; }        /* Light Green */
+  .medium-risk { background-color: #e7991e; }     /* Orange */
+  .high-risk { background-color: #fd5a03; }       /* Red-Orange */
+  .severe-risk { background-color: #C0392B; } 
+  
+  .profile-esg{
+      padding-left: 7%;
+      padding-right: 7%;
+      margin-top: 3%;
+      margin-bottom: 3%;
+  }
+  
+  
+  
+
+/* Company Card Container *//* Company Card Container */
+.company-card {
+    background: #ffffff;
+    color: #333;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 700px;
+    margin: auto;
+    text-align: left;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+/* Hover effect - subtle lift */
+.company-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Company Name */
+.company-name {
+    font-size: 22px;
+    font-weight: 700;
+    text-align: center;
+    transition: color 0.3s ease-in-out;
+}
+
+/* Change color on hover */
+.company-card:hover .company-name {
+    color: #007bff;
+}
+
+/* Tagline */
+.tagline {
+    font-size: 14px;
+    color: #777;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+/* Details Styling */
+.company-details {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Each detail row */
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    transition: transform 0.2s ease-in-out;
+}
+
+/* Subtle pop-out effect on hover */
+.detail-item:hover {
+    transform: translateX(5px);
+}
+
+/* Last item should not have border */
+.detail-item:last-child {
+    border-bottom: none;
+}
+
+/* Risk & Recommendation Tag */
+.risk-tag, .recommendation-tag {
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 5px;
+    transition: transform 0.2s ease-in-out;
+}
+
+/* Risk color based on level */
+.risk-tag {
+    background: #ffe5e5;
+    color: #d9534f;
+}
+
+/* Investment Recommendation Tag */
+.recommendation-tag {
+    background: #e5f5e5;
+    color: #5cb85c;
+}
+
+/* Tags hover effect */
+.risk-tag:hover, .recommendation-tag:hover {
+    transform: scale(1.1);
+}
+
+/* Links */
+a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease-in-out;
+}
+
+/* Change color & slight scale on hover */
+a:hover {
+    text-decoration: none;
+    color: #0056b3;
+    transform: scale(1.05);
+}
+
+/* Fade-in animation */
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 0.8s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* ====== Profile Header Alignment ====== */
+.profile-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap; /* keeps it neat on small screens */
+  gap: 15px;
+}
+
+/* ====== Analyse with AI Button ====== */
+.ai-analyse-btn {
+  background: transparent;
+  border: 2px solid #7b2ff7; /* visible border */
+  border-radius: 50px;
+  padding: 7px 18px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
+}
+
+/* Gradient text using your #07074D palette */
+.ai-analyse-btn span {
+  background: linear-gradient(90deg, #07074D, #6a11cb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.ai-analyse-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(135, 37, 181, 0.3);
+  border-color: #07074D; /* stronger border highlight on hover */
+}
+
+.profile-header i {
+  background: linear-gradient(90deg, #6a11cb, #f107a3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Optional tweak: ensure text and button line up nicely with heading */
+.profile-esg h2 {
+  margin-bottom: 0;
+}
+
+/* ====== Popup Overlay ====== */
+.ai-popup-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(5px);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* ====== Popup ====== */
+/* .ai-popup {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 18px;
+  padding: 30px 40px;
+  text-align: center;
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+  position: relative;
+  width: 90%;
+  max-width: 500px;
+  animation: popupIn 0.3s ease;
+} */
+.ai-popup {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 18px;
+  padding: 40px 50px;          
+  text-align: center;
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+  position: relative;
+  width: 95%;                  
+  max-width: 800px;           
+  min-width: 600px;            
+  animation: popupIn 0.3s ease;
+}
+
+.ai-title-gradient {
+  background: linear-gradient(90deg, #7b2ff7, #f107a3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 25px;
+  font-weight: bold;
+}
+
+/* ====== Step Buttons ====== */
+/* .steps-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.step-btn {
+  background: rgba(255,255,255,0.8);
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.step-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(123, 47, 247, 0.3);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.step-btn i {
+  font-size: 1.6rem;
+  color: #7b2ff7;
+  margin-bottom: 8px;
+}
+
+.step-btn h5 {
+  margin: 0;
+  font-weight: bold;
+  color: #333;
+}
+
+.step-btn p {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 4px 0 0;
+} */
+ 
+/* Popup button container */
+.steps-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: stretch;       /* ensures equal height across all cards */
+  gap: 20px;
+}
+
+.step-btn {
+  flex: 1;
+  background: rgba(255,255,255,0.8);
+  border-radius: 16px;
+  padding: 20px;
+  color: #fff;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;              /* make internal layout consistent */
+  flex-direction: column;     /* stack icon, heading, text vertically */
+  justify-content: space-between; /* evenly distribute content vertically */
+  min-height: 200px;          /* ensures consistent height even with wrapping */
+}
+
+.step-btn h5 {
+  min-height: 2.6em;          /* reserves space for 1–2 lines of text */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 8px 0 4px 0;
+  font-size: 1rem;
+  font-weight: bold;;
+}
+
+.step-btn p {
+  flex-grow: 1;               /* pushes text down consistently */
+  font-size: 0.9rem;
+  line-height: 1.3;
+  margin: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: center;
+  color: #666;
+}
+
+.step-btn i {
+  font-size: 2rem;
+  color: #7b2ff7;               
+  margin-bottom: 8px;
+}
+
+.step-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(123, 47, 247, 0.4);
+}
+
+/* ====== Close Button ====== */
+.ai-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  background: transparent;
+  border: none;
+  color: #999;
+  font-size: 1.6rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.ai-close-btn:hover {
+  color: #555;
+}
+
+/* ====== Animation ====== */
+@keyframes popupIn {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.esg-score-value{
+  font-family: 'Arial';
+  color:#1e4356;
+  font-size: 2rem; 
+  line-height: 1;
+}
